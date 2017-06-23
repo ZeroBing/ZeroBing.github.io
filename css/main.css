@@ -1810,7 +1810,7 @@ pre .javascript .function {
   margin-right: 10px;
 }
 .powered-by::after {
-  content: "|";
+  content: "";
   padding-left: 10px;
 }
 .cc-license {
