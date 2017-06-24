@@ -277,9 +277,9 @@ p {
   margin: 0 0 25px 0;
 }
 a {
-  color: #333;
+  color: #555;
   text-decoration: none;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid #999;
   word-wrap: break-word;
 }
 a:hover {
@@ -1677,7 +1677,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #fff64a;
+  background: #da29e7;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -1808,10 +1808,6 @@ pre .javascript .function {
 }
 .powered-by {
   margin-right: 10px;
-}
-.powered-by::after {
-  content: "|";
-  padding-left: 10px;
 }
 .cc-license {
   margin-top: 10px;
