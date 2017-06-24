@@ -100,7 +100,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/06/23/Webpack使用/index.html">
 <meta property="og:site_name" content="Mr.Z">
 <meta property="og:description" content="前端资源模块化管理和打包工具">
-<meta property="og:updated_time" content="2017-06-24T02:45:13.451Z">
+<meta property="og:updated_time" content="2017-06-24T02:49:38.614Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Webpack使用">
 <meta name="twitter:description" content="前端资源模块化管理和打包工具">
@@ -321,12 +321,13 @@
 
       
         <blockquote>
-<p>前端资源模块化管理和打包工具<br><a id="more"></a></p>
+<p>前端资源模块化管理和打包工具</p>
 </blockquote>
+<a id="more"></a>
 <h2 id="简单示例"><a href="#简单示例" class="headerlink" title="简单示例"></a>简单示例</h2><h3 id="初始化项目"><a href="#初始化项目" class="headerlink" title="初始化项目"></a>初始化项目</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm init -y</div></pre></td></tr></table></figure>
 <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install webpack -g</div></pre></td></tr></table></figure>
 <p>最简单的就是 webpack app.js bulid.js</p>
-<p><em>webpack默认支持es6语法**</em></p>
+<p><em>webpack默认支持es6语法</em></p>
 <h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p><em>名字是固定的 webpack.config.js，就是一个普通的 node 模块</em></p>
 <p><strong>配置<code>webpack.config.js</code></strong><br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = &#123;</div><div class="line">	<span class="attr">entry</span>: <span class="string">'/app.js'</span>,					<span class="comment">// 打包的入口文件</span></div><div class="line">	output: &#123;</div><div class="line">		<span class="attr">path</span>: __dirname + <span class="string">'/bin'</span>,		<span class="comment">// 打包文件存储的位置</span></div><div class="line">		filename: <span class="string">'bulid.js'</span>			<span class="comment">// 打包好的文件名</span></div><div class="line">	&#125;,</div><div class="line">	<span class="attr">modules</span>: &#123;</div><div class="line">		<span class="attr">loaders</span>: [&#123;</div><div class="line">			<span class="attr">test</span>: <span class="regexp">/\.fileType$/</span>,		<span class="comment">//	设置处理的文件类型，文件后缀名</span></div><div class="line">			loader: <span class="string">''</span>					<span class="comment">//	设置处理的 loader，中间用!隔开</span></div><div class="line">		&#125;]</div><div class="line">	&#125;,</div><div class="line">	<span class="attr">plugins</span>: [</div><div class="line">		</div><div class="line">	]</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p><em>最好加上绝对路径，也就是 <code>__dirname</code></em></p>
