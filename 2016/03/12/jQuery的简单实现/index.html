@@ -1,0 +1,738 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="技术,jQuery," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="对jQ的源码做了一些了解，在这里简单实现一下。">
+<meta name="keywords" content="技术,jQuery">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jQuery的简单实现">
+<meta property="og:url" content="http://yoursite.com/2016/03/12/jQuery的简单实现/index.html">
+<meta property="og:site_name" content="Por una Cabeza">
+<meta property="og:description" content="对jQ的源码做了一些了解，在这里简单实现一下。">
+<meta property="og:updated_time" content="2017-07-04T14:17:26.326Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="jQuery的简单实现">
+<meta name="twitter:description" content="对jQ的源码做了一些了解，在这里简单实现一下。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/03/12/jQuery的简单实现/"/>
+
+
+
+
+
+  <title>jQuery的简单实现 | Por una Cabeza</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Por una Cabeza</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/12/jQuery的简单实现/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Por una Cabeza">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Por una Cabeza">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">jQuery的简单实现</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-12T16:39:22+08:00">
+                2016-03-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>对jQ的源码做了一些了解，在这里简单实现一下。</p>
+<a id="more"></a>
+<h1 id="关于jQuery"><a href="#关于jQuery" class="headerlink" title="关于jQuery"></a>关于jQuery</h1><p>不可否认，jQuery的重要性，使用频率堪称前端程序员之最。<br>正像作者所提出的口号一样：“Write Less, Do More”，写的更少，做的更多。</p>
+<p>独特的链式语法，高效灵活的CSS选择器，便捷的插件扩展机制，强大的兼容性</p>
+<p><strong>tips</strong>：关于jQuery中的选择器引擎，是jQuery作者另外写的一个选择器引擎，这里不多做介绍，本篇文章利用H5新增的querySelectorAll来模拟jQuery中的Sizzle选择器引擎。</p>
+<h1 id="第一阶段"><a href="#第一阶段" class="headerlink" title="第一阶段"></a>第一阶段</h1><h2 id="模拟选择器引擎"><a href="#模拟选择器引擎" class="headerlink" title="模拟选择器引擎"></a>模拟选择器引擎</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Sizzle</span>(<span class="params">selector</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="built_in">document</span>.querySelectorAll(selector);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Sizzle函数只是用来获取元素的方法，那么为了不影响其独立性和干净，所有方法和属性就不应该扔在Sizzle函数中。</p>
+<h2 id="定义函数，在函数内部调用Sizzle函数来获取到元素"><a href="#定义函数，在函数内部调用Sizzle函数来获取到元素" class="headerlink" title="定义函数，在函数内部调用Sizzle函数来获取到元素"></a>定义函数，在函数内部调用Sizzle函数来获取到元素</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"> <span class="function"><span class="keyword">function</span> <span class="title">Sizzle</span>(<span class="params">selector</span>)</span>&#123;</div><div class="line">   <span class="keyword">return</span> <span class="built_in">document</span>.querySelectorAll(selector);</div><div class="line"> &#125;</div><div class="line"></div><div class="line"> <span class="function"><span class="keyword">function</span> <span class="title">IT</span>(<span class="params">selector</span>) </span>&#123;</div><div class="line">   <span class="keyword">var</span> doms = Sizzle(selector);</div><div class="line">   doms.a = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</div><div class="line">     <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.length; i++) &#123;</div><div class="line">			<span class="keyword">var</span> dom = <span class="keyword">this</span>[i];</div><div class="line">			<span class="built_in">console</span>.log(dom);</div><div class="line">		&#125;</div><div class="line">   &#125;</div><div class="line">   <span class="keyword">return</span> doms;</div><div class="line"> &#125;</div><div class="line"></div><div class="line"> <span class="keyword">var</span> doms = IT(<span class="string">'div'</span>);</div><div class="line">doms.a();</div></pre></td></tr></table></figure>
+<p><em>这样的话，会出现另一个问题，当获取多个页面元素的时候，因为a方法是定义在DOM元素下面的，那么获取多个元素的时候，就会创建多个a方法的内存空间，从而影响性能</em></p>
+<h2 id="将方法放在原型上，解决多个元素的时候，创建多个内存空间的问题"><a href="#将方法放在原型上，解决多个元素的时候，创建多个内存空间的问题" class="headerlink" title="将方法放在原型上，解决多个元素的时候，创建多个内存空间的问题"></a>将方法放在原型上，解决多个元素的时候，创建多个内存空间的问题</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Sizzle</span>(<span class="params">selector</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="built_in">document</span>.querySelectorAll(selector);</div><div class="line">&#125;</div><div class="line"></div><div class="line">NodeList.prototype.a = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.length; i++) &#123;</div><div class="line">	<span class="keyword">var</span> dom = <span class="keyword">this</span>[i];</div><div class="line">	<span class="built_in">console</span>.log(dom);</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">IT</span>(<span class="params">selector</span>)</span>&#123;</div><div class="line">  <span class="keyword">var</span> doms = Sizzle(selector);</div><div class="line">  <span class="keyword">return</span> doms;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>doms是<code>NodeList</code>的实例。那么doms对象指向的原型就应该是<code>NodeList</code>函数的原型</p>
+<p>这个时候，访问原型上的方法就可以避免创建多个内存空间的问题</p>
+<p><em>但是<code>NodeList</code>是一个内置的对象，不应该进行污染，那么就自定义一个对象，将所有的方法放在自定义对象中</em></p>
+<h2 id="将方法放在自定义对象中"><a href="#将方法放在自定义对象中" class="headerlink" title="将方法放在自定义对象中"></a>将方法放在自定义对象中</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Sizzle</span>(<span class="params">selector</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="built_in">document</span>.querySelectorAll(selector);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">IT</span>(<span class="params">selector</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> doms = Sizzle(selector);</div><div class="line">  <span class="keyword">var</span> obj = &#123;</div><div class="line">    <span class="attr">a</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</div><div class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.length; i++) &#123;</div><div class="line">		  <span class="keyword">var</span> dom = <span class="keyword">this</span>[i];</div><div class="line">		  <span class="built_in">console</span>.log(dom);</div><div class="line">	  &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  obj.elements = doms;</div><div class="line">  <span class="keyword">return</span> obj;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>创建一个对象，让获取到的元素成为这个对象的一个属性，那么这些元素就可以访问到这个对象上面的所有方法，并且没有污染到内置的对象。</p>
+<p><em>但是，这个时候，又回到了以前的一个问题，，每次调用 IT 函数的时候，又会创建单独的对象，方法就又指向了不同的内存空间。影响性能</em></p>
+<h2 id="将方法放在自定义的构造函数中"><a href="#将方法放在自定义的构造函数中" class="headerlink" title="将方法放在自定义的构造函数中"></a>将方法放在自定义的构造函数中</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"> <span class="function"><span class="keyword">function</span> <span class="title">Sizzle</span>(<span class="params">selector</span>)</span>&#123;</div><div class="line">   <span class="keyword">return</span> <span class="built_in">document</span>.querySelectorAll(selector);</div><div class="line"> &#125;</div><div class="line"> <span class="function"><span class="keyword">function</span> <span class="title">F</span>(<span class="params"></span>)</span>&#123;</div><div class="line"></div><div class="line"> &#125;</div><div class="line"> F.prototype = &#123;</div><div class="line">   <span class="attr">constructor</span>: F,</div><div class="line">   <span class="attr">a</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</div><div class="line">     <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.elements.length; i++) &#123;</div><div class="line">		  <span class="keyword">var</span> dom = <span class="keyword">this</span>.elements[i];</div><div class="line">			<span class="built_in">console</span>.log(dom);</div><div class="line">		&#125;</div><div class="line">   &#125;</div><div class="line"> &#125;</div><div class="line"> <span class="function"><span class="keyword">function</span> <span class="title">IT</span>(<span class="params">selector</span>) </span>&#123;</div><div class="line">   <span class="keyword">var</span> doms = Sizzle(selector);</div><div class="line">   <span class="keyword">var</span> f = <span class="keyword">new</span> F();</div><div class="line">   f.element = doms;</div><div class="line">   <span class="keyword">return</span> f;</div><div class="line"> &#125;</div><div class="line"></div><div class="line"> <span class="keyword">var</span> doms = IT(<span class="string">'div'</span>);</div><div class="line">doms.a();</div><div class="line"><span class="keyword">var</span> bodys = IT(<span class="string">'body'</span>);</div><div class="line">bodys.a();</div><div class="line"><span class="built_in">console</span>.log( doms.a == bodys.a );</div></pre></td></tr></table></figure>
+<p>这个时候，获取到的元素变成构造函数的实例中的一个属性，这样的话，所有获取到的元素就可以访问到构造函数原型中的所有方法，并且指向了同一个内存地址</p>
+<h2 id="将代码放到一个闭包函数中，暴露两个接口到外界"><a href="#将代码放到一个闭包函数中，暴露两个接口到外界" class="headerlink" title="将代码放到一个闭包函数中，暴露两个接口到外界"></a>将代码放到一个闭包函数中，暴露两个接口到外界</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">Sizzle</span>(<span class="params">selector</span>)</span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="built_in">document</span>.querySelectorAll(selector);</div><div class="line">  &#125;</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">F</span>(<span class="params"></span>)</span>&#123;</div><div class="line"></div><div class="line">  &#125;</div><div class="line">  F.prototype = &#123;</div><div class="line">    <span class="attr">constructor</span>: F,</div><div class="line">    <span class="attr">a</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</div><div class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.elements.length; i++) &#123;</div><div class="line">  	  <span class="keyword">var</span> dom = <span class="keyword">this</span>.elements[i];</div><div class="line">  		<span class="built_in">console</span>.log(dom);</div><div class="line">  	&#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">IT</span>(<span class="params">selector</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> doms = Sizzle(selector);</div><div class="line">    <span class="keyword">var</span> f = <span class="keyword">new</span> F();</div><div class="line">    f.element = doms;</div><div class="line">    <span class="keyword">return</span> f;</div><div class="line">  &#125;</div><div class="line">  <span class="built_in">window</span>.$ = <span class="built_in">window</span>.jQuery = IT;</div><div class="line">&#125;)()</div></pre></td></tr></table></figure>
+<p>避免全局的变量污染</p>
+<h2 id="简化代码，清晰第一阶段的逻辑"><a href="#简化代码，清晰第一阶段的逻辑" class="headerlink" title="简化代码，清晰第一阶段的逻辑"></a>简化代码，清晰第一阶段的逻辑</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">;(<span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">Sizzle</span>(<span class="params">selector</span>)</span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="built_in">document</span>.querySelectorAll(selector);</div><div class="line">  &#125;</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">F</span>(<span class="params">selector</span>)</span>&#123;</div><div class="line">    <span class="keyword">this</span>.elements = Sizzle(selector);</div><div class="line">  &#125;</div><div class="line">  F.prototype = &#123;</div><div class="line">    <span class="attr">constructor</span>: F,</div><div class="line">    <span class="attr">a</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</div><div class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.elements.length; i++) &#123;</div><div class="line">        <span class="keyword">var</span> dom = <span class="keyword">this</span>.elements[i];</div><div class="line">        <span class="built_in">console</span>.log(dom);</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">IT</span>(<span class="params">selector</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> F(selector)</div><div class="line">  &#125;</div><div class="line">  <span class="built_in">window</span>.$ = <span class="built_in">window</span>.jquery = IT;</div><div class="line">&#125;)();</div></pre></td></tr></table></figure>
+<p>将获取元素的方法放到构造函数的内部，直接在构造函数内部获取到元素，添加到构造函数的属性</p>
+<h1 id="第二阶段"><a href="#第二阶段" class="headerlink" title="第二阶段"></a>第二阶段</h1><h2 id="扩展方法的逻辑"><a href="#扩展方法的逻辑" class="headerlink" title="扩展方法的逻辑"></a>扩展方法的逻辑</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">;(<span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">Sizzle</span>(<span class="params">selector</span>)</span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="built_in">document</span>.querySelectorAll(selector);</div><div class="line">  &#125;</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">F</span>(<span class="params">selector</span>)</span>&#123;</div><div class="line">    <span class="keyword">this</span>.elements = Sizzle(selector);</div><div class="line">  &#125;</div><div class="line">  F.prototype = &#123;</div><div class="line">    <span class="attr">constructor</span>: F,</div><div class="line">    <span class="attr">a</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</div><div class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.elements.length; i++) &#123;</div><div class="line">        <span class="keyword">var</span> dom = <span class="keyword">this</span>.elements[i];</div><div class="line">        <span class="built_in">console</span>.log(dom);</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  F.prototype = IT.prototype;</div><div class="line">  <span class="comment">//	让 F 函数的原型指向 IT 函数的原型，这样就可以通过入口函数访问到 F 这个构造函数下的所有方法，并且想要扩展的时候，只需要在入口函数的原型上添加方法即可。</span></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">IT</span>(<span class="params">selector</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> F(selector)</div><div class="line">  &#125;</div><div class="line">  <span class="comment">//  IT函数就是入口函数，用来返回一个F实例</span></div><div class="line">  <span class="built_in">window</span>.$ = <span class="built_in">window</span>.jquery = IT;</div><div class="line">&#125;)();</div></pre></td></tr></table></figure>
+<p>想要扩展方法的时候，需要用插件的形式往jQuery中添加，而不是去修改已经封装好的库。<br>但是外界已经无法访问到F函数，自然就无法向原型添加方法<br>那么索性就直接将操作DOM的方法放在IT函数中，然后让F函数的原型指向IT函数的原型，这样F函数的实例就可以访问到所有的方法</p>
+<h2 id="链式编程"><a href="#链式编程" class="headerlink" title="链式编程"></a>链式编程</h2><blockquote>
+<p>关于所谓的链式编程，最简单的描述就是在每个方法的内部再次返回实例即可</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">F.prototype = &#123;</div><div class="line">  <span class="attr">constructor</span>: F,</div><div class="line">  <span class="attr">a</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.elements.length; i++) &#123;</div><div class="line">      <span class="keyword">var</span> dom = <span class="keyword">this</span>.elements[i];</div><div class="line">      <span class="built_in">console</span>.log(dom);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;  <span class="comment">//  返回实例</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>但是这样的话，会有很多问题出现</p>
+<ul>
+<li>并不是所有的方法都需要链式编程，例如CSS方法如果只传入一个参数的话，只需要获取，不需要链式编程</li>
+<li>这样的链式编程只能够对一个元素进行链式操作。但是操作的元素不同的话，一条链子就无法实现了。</li>
+</ul>
+<h2 id="解决链式编程的问题"><a href="#解决链式编程的问题" class="headerlink" title="解决链式编程的问题"></a>解决链式编程的问题</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">Sizzle</span>(<span class="params">selector</span>)</span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="built_in">document</span>.querySeletorAll(selector);</div><div class="line">  &#125;</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">IT</span>(<span class="params">selector</span>)</span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> IT.prototype.F(selector);</div><div class="line">  &#125;</div><div class="line">  IT.prototype = &#123;</div><div class="line">    <span class="attr">constructor</span>: IT,</div><div class="line">    <span class="attr">F</span>: <span class="function"><span class="keyword">function</span> (<span class="params">selector</span>)</span>&#123;</div><div class="line">      <span class="keyword">this</span>.elements = Sizzle(selector);</div><div class="line">      <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">    &#125;</div><div class="line">    a: <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</div><div class="line">      <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.elements.length; i++) &#123;</div><div class="line">        <span class="keyword">var</span> dom = <span class="keyword">this</span>.elements[i];</div><div class="line">        <span class="built_in">console</span>.log(dom);</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  IT.prototype.F.prototype = IT.prototype;</div><div class="line">  <span class="built_in">window</span>.$ = <span class="built_in">window</span>.jQuery = IT;</div><div class="line">&#125;)()</div></pre></td></tr></table></figure>
+<p>将F函数放到入口函数的原型中，这样的话，创建一个实例就可以访问到原型上的F方法，可以继续创建实例。这样的话，就可以继续进行链式编程</p>
+<h2 id="将元素以伪数组的方式放到实例中"><a href="#将元素以伪数组的方式放到实例中" class="headerlink" title="将元素以伪数组的方式放到实例中"></a>将元素以伪数组的方式放到实例中</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">Sizzle</span>(<span class="params">selector</span>)</span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="built_in">document</span>.querySeletorAll(selector);</div><div class="line">  &#125;</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">IT</span>(<span class="params">selector</span>)</span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> IT.prototype.F(selector);</div><div class="line">  &#125;</div><div class="line">  IT.prototype = &#123;</div><div class="line">    <span class="attr">constructor</span>: IT,</div><div class="line">    <span class="attr">F</span>: <span class="function"><span class="keyword">function</span> (<span class="params">selector</span>)</span>&#123;</div><div class="line">      [].splice.call(<span class="keyword">this</span>, <span class="number">0</span>, <span class="keyword">this</span>.length)</div><div class="line">      <span class="keyword">var</span> doms = Sizzle(selector)</div><div class="line">      [].push.apply(<span class="keyword">this</span>, doms)</div><div class="line">      <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">    &#125;</div><div class="line">    a: <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</div><div class="line">      <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.length; i++) &#123;</div><div class="line">        <span class="keyword">var</span> dom = <span class="keyword">this</span>[i];</div><div class="line">        <span class="built_in">console</span>.log(dom);</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  IT.prototype.F.prototype = IT.prototype;</div><div class="line">  <span class="built_in">window</span>.$ = <span class="built_in">window</span>.jQuery = IT;</div><div class="line">&#125;)()</div></pre></td></tr></table></figure>
+<p>将获取到的元素直接放到实例中，避免产生 this.elements 这个属性，方便用户的遍历。<br>注意的一个小点就是每次添加之前都要对之前添加的进行清空</p>
+<h2 id="简化代码，核心完成"><a href="#简化代码，核心完成" class="headerlink" title="简化代码，核心完成"></a>简化代码，核心完成</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">var</span> arr = [];</div><div class="line">  <span class="keyword">var</span> push = arr.push;</div><div class="line">  <span class="keyword">var</span> splice = arr.splice;</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">Sizzle</span>(<span class="params">selector</span>)</span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="built_in">document</span>.querySeletorAll(selector);</div><div class="line">  &#125;</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">jQuery</span>(<span class="params">selector</span>)</span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> jQuery.fn.init(selector);</div><div class="line">  &#125;</div><div class="line">  jQuery.fn = jQuery.prototype = &#123;</div><div class="line">    <span class="attr">constructor</span>: jQuery,</div><div class="line">    <span class="attr">init</span>: <span class="function"><span class="keyword">function</span> (<span class="params">selector</span>)</span>&#123;</div><div class="line">      splice.call(<span class="keyword">this</span>, <span class="number">0</span>, <span class="keyword">this</span>.length)</div><div class="line">      <span class="keyword">var</span> doms = Sizzle(selector)</div><div class="line">      push.apply(<span class="keyword">this</span>, doms)</div><div class="line">      <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">    &#125;</div><div class="line">    a: <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</div><div class="line">      <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.length; i++) &#123;</div><div class="line">        <span class="keyword">var</span> dom = <span class="keyword">this</span>[i];</div><div class="line">        <span class="built_in">console</span>.log(dom);</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  jQuery.fn.init.prototype = jQuery.fn;</div><div class="line">  <span class="built_in">window</span>.$ = <span class="built_in">window</span>.jQuery = jQuery;</div><div class="line">&#125;)()</div></pre></td></tr></table></figure>
+<ul>
+<li>闭包函数，开放两个接口到外界</li>
+<li>创建选择器函数</li>
+<li>创建一个入口函数，返回入口函数原型中的获取元素的函数</li>
+<li>将创建实例的函数定义在入口函数的原型中，直接将获取到的元素保存到创建实例的函数中</li>
+<li>将实例函数的原型指向入口函数的原型。能够访问到定义在入口函数的方法</li>
+<li>定义两个接口让外界能够进行访问</li>
+</ul>
+<h1 id="第三阶段（封装工具方法）"><a href="#第三阶段（封装工具方法）" class="headerlink" title="第三阶段（封装工具方法）"></a>第三阶段（封装工具方法）</h1><h2 id="封装-extend-方法"><a href="#封装-extend-方法" class="headerlink" title="封装$.extend()方法"></a>封装$.extend()方法</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">jQuery.fn.extend = jQuery.extend = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="comment">//	jQuery.fn.extend 和 jQuery.extend 的方法体是完全一样的</span></div><div class="line">  <span class="keyword">var</span> arg0 = <span class="built_in">arguments</span>[<span class="number">0</span>];</div><div class="line">  <span class="keyword">if</span> ( <span class="built_in">arguments</span>.length == <span class="number">1</span> )&#123;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> arg0)&#123;</div><div class="line">      <span class="keyword">this</span>[key] = arg0[key];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="keyword">for</span> ( <span class="keyword">var</span> i = <span class="number">1</span>; i &lt; argument.length; i++ )&#123;</div><div class="line">      <span class="keyword">var</span> obj = <span class="built_in">arguments</span>[i];</div><div class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> obj)&#123;</div><div class="line">        arg0[key] = obj[key];</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> arg0;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><em>优化版本</em></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">jQuery.fn.extend = jQuery.extend = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">var</span> target , sources = [];</div><div class="line">  <span class="comment">// 定义 target 和 sources 分别表示目标对象和要拷贝的源对象</span></div><div class="line">  <span class="keyword">var</span> arg0 = <span class="built_in">arguments</span>[<span class="number">0</span>];</div><div class="line">  <span class="keyword">if</span> ( <span class="built_in">arguments</span>.length == <span class="number">1</span> )&#123;</div><div class="line">    target = <span class="keyword">this</span>;</div><div class="line">	sources.push(arg0);</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    target = arg0;</div><div class="line">    push.apply(sources, <span class="built_in">arguments</span>);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; sources.length; i++) &#123;</div><div class="line">  <span class="keyword">var</span> source = sources[i];</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> source) &#123;</div><div class="line">		target[key] = source[key];</div><div class="line">	&#125;</div><div class="line">&#125;	</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>实现了 for 循环和 for-in循环的重用</p>
+<h2 id="type-方法的实现"><a href="#type-方法的实现" class="headerlink" title="type 方法的实现"></a>type 方法的实现</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"> <span class="keyword">var</span> toString = <span class="built_in">Object</span>.prototype.toString;</div><div class="line"> <span class="keyword">var</span> class2type = &#123;&#125;;</div><div class="line"> <span class="keyword">var</span> types = <span class="string">"Number String Boolean Math Date Function Array RegExp"</span>.split(<span class="string">" "</span>);</div><div class="line"> <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; types.length; i++) &#123;</div><div class="line">	<span class="keyword">var</span> type = types[i];</div><div class="line">	class2type[<span class="string">"[object "</span> + type + <span class="string">"]"</span>] = type.toLowerCase();</div><div class="line">&#125;</div><div class="line"> jQuery.extend(&#123;</div><div class="line">   <span class="attr">type</span>: <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</div><div class="line">		<span class="keyword">return</span> data==<span class="literal">null</span> ? data : class2type[toString.call(data)];</div><div class="line">	&#125;</div><div class="line"> &#125;)</div></pre></td></tr></table></figure>
+<h2 id="工具类方法"><a href="#工具类方法" class="headerlink" title="工具类方法"></a>工具类方法</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"> <span class="keyword">var</span> toString = <span class="built_in">Object</span>.prototype.toString;</div><div class="line"> <span class="keyword">var</span> class2type = &#123;&#125;;</div><div class="line"> <span class="keyword">var</span> types = <span class="string">"Number String Boolean Math Date Function Array RegExp"</span>.split(<span class="string">" "</span>);</div><div class="line"> <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; types.length; i++) &#123;</div><div class="line">	<span class="keyword">var</span> type = types[i];</div><div class="line">	class2type[<span class="string">"[object "</span> + type + <span class="string">"]"</span>] = type.toLowerCase();</div><div class="line">&#125;</div><div class="line"> jQuery.extend(&#123;</div><div class="line">   <span class="attr">type</span>: <span class="function"><span class="keyword">function</span> (<span class="params">data</span>)</span>&#123;</div><div class="line">		<span class="keyword">return</span> data == <span class="literal">null</span> ? data : class2type[toString.call(data)];</div><div class="line">	&#125;,</div><div class="line">   <span class="attr">isString</span>: <span class="function"><span class="keyword">function</span> (<span class="params">str</span>)</span>&#123;</div><div class="line">     <span class="keyword">return</span> jQuery.type(str) === <span class="string">"string"</span>;</div><div class="line">   &#125;,</div><div class="line">   <span class="attr">isFunction</span>: <span class="function"><span class="keyword">function</span> (<span class="params">fn</span>)</span>&#123;</div><div class="line">     <span class="keyword">return</span> jQuery.type(str) === <span class="string">"function"</span>;</div><div class="line">   &#125;,</div><div class="line">   <span class="attr">isArray</span>: <span class="function"><span class="keyword">function</span> (<span class="params">arr</span>)</span>&#123;</div><div class="line">     <span class="comment">//	判断是不是数组的时候需要注意，ES5 中新增了 Array.isArray() 内置方法，所以应该优先使用这个内置方法，那么就要进行能力检测。</span></div><div class="line">     <span class="keyword">return</span> <span class="built_in">Array</span>.isArray ? <span class="built_in">Array</span>.isArray(arr) : jQuery.type(arr) === <span class="string">"array"</span>;</div><div class="line">   &#125;</div><div class="line"> &#125;)</div></pre></td></tr></table></figure>
+<p>关于jQuery内部函数方法的封装就到这里。完整的代码请参考</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/技术/" rel="tag"># 技术</a>
+          
+            <a href="/tags/jQuery/" rel="tag"># jQuery</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/20/Webpack使用/" rel="prev" title="Webpack使用">
+                Webpack使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Por una Cabeza" />
+          <p class="site-author-name" itemprop="name">Por una Cabeza</p>
+           
+              <p class="site-description motion-element" itemprop="description">stay hungry , stay foolish</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#关于jQuery"><span class="nav-number">1.</span> <span class="nav-text">关于jQuery</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第一阶段"><span class="nav-number">2.</span> <span class="nav-text">第一阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#模拟选择器引擎"><span class="nav-number">2.1.</span> <span class="nav-text">模拟选择器引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义函数，在函数内部调用Sizzle函数来获取到元素"><span class="nav-number">2.2.</span> <span class="nav-text">定义函数，在函数内部调用Sizzle函数来获取到元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将方法放在原型上，解决多个元素的时候，创建多个内存空间的问题"><span class="nav-number">2.3.</span> <span class="nav-text">将方法放在原型上，解决多个元素的时候，创建多个内存空间的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将方法放在自定义对象中"><span class="nav-number">2.4.</span> <span class="nav-text">将方法放在自定义对象中</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将方法放在自定义的构造函数中"><span class="nav-number">2.5.</span> <span class="nav-text">将方法放在自定义的构造函数中</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将代码放到一个闭包函数中，暴露两个接口到外界"><span class="nav-number">2.6.</span> <span class="nav-text">将代码放到一个闭包函数中，暴露两个接口到外界</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简化代码，清晰第一阶段的逻辑"><span class="nav-number">2.7.</span> <span class="nav-text">简化代码，清晰第一阶段的逻辑</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第二阶段"><span class="nav-number">3.</span> <span class="nav-text">第二阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展方法的逻辑"><span class="nav-number">3.1.</span> <span class="nav-text">扩展方法的逻辑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链式编程"><span class="nav-number">3.2.</span> <span class="nav-text">链式编程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决链式编程的问题"><span class="nav-number">3.3.</span> <span class="nav-text">解决链式编程的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将元素以伪数组的方式放到实例中"><span class="nav-number">3.4.</span> <span class="nav-text">将元素以伪数组的方式放到实例中</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简化代码，核心完成"><span class="nav-number">3.5.</span> <span class="nav-text">简化代码，核心完成</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第三阶段（封装工具方法）"><span class="nav-number">4.</span> <span class="nav-text">第三阶段（封装工具方法）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#封装-extend-方法"><span class="nav-number">4.1.</span> <span class="nav-text">封装$.extend()方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#type-方法的实现"><span class="nav-number">4.2.</span> <span class="nav-text">type 方法的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#工具类方法"><span class="nav-number">4.3.</span> <span class="nav-text">工具类方法</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Por una Cabeza</span>
+</div>
+
+
+<div class="powered-by">
+  <span class="theme-link">stay hungry , stay foolish</span>
+</div>
+
+<div class="theme-info">
+  <span class="theme-link"></span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
