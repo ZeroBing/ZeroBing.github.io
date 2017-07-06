@@ -449,14 +449,78 @@
 
       
         
-          <h1 id="关于-rem"><a href="#关于-rem" class="headerlink" title="关于 rem"></a>关于 rem</h1>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/04/02/关于rem/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+          
+            <a id="more"></a>
+<h1 id="关于-rem"><a href="#关于-rem" class="headerlink" title="关于 rem"></a>关于 rem</h1><h2 id="rem是什么？"><a href="#rem是什么？" class="headerlink" title="rem是什么？"></a>rem是什么？</h2><p>rem（font size of the root element）是指相对于根元素的字体大小的单位。<br>简单的说它就是一个相对单位。看到rem大家一定会想起em单位<br>em（font size of the element）是指相对于父元素的字体大小的单位<br>它们之间其实很相似，只不过一个计算的规则是依赖根元素一个是依赖父元素计算。</p>
+<p>rem –&gt; 相对于根元素<br>em  –&gt; 相对于父元素</p>
+<hr>
+<p>em 相对单位 相对于父级元素设置的文字大小进行设置<br>如果没有设置文字大小，就是默认</p>
+<p>rem 也是相对单位，但是相对的却是根元素。<br>网页中的根元素指的是html<br>通过设置html的字体大小，就可以控制rem的大小</p>
+<h2 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h2><p>举一个简单的例子</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">html</span> &#123;</div><div class="line">  <span class="attribute">font-size</span>: <span class="number">20px</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-tag">div</span> &#123;</div><div class="line">  <span class="attribute">width</span>: <span class="number">1rem</span>;    <span class="comment">/* 等同于 width: 20px */</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">html</span> &#123;</div><div class="line">  <span class="attribute">font-size</span>: <span class="number">20px</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-tag">div</span> &#123;</div><div class="line">  <span class="attribute">width</span>: <span class="number">5rem</span>;    <span class="comment">/* 等同于 width: 20px */</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>从上面的两个例子可以看出来，rem的值完全就是根据根元素的字体大小的值来进行改变的<br>那么只要在不同的屏幕中给html设置不同的字体大小便可以更改rem的值</p>
+<p>那么，这个时候问题就来了。怎么计算出不同分辨率下font-size的值</p>
+<p>首先假设我上面的页面设计稿给我时候是按照640的标准尺寸给我的，（当然这个尺寸肯定不一定是640，可以是320，或者480，又或是375）来看一组表格。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">屏幕尺寸</th>
+<th style="text-align:center">html设置字体</th>
+<th style="text-align:center">元素宽度</th>
+<th style="text-align:center">rem 尺寸</th>
+<th style="text-align:center">页面显示</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">640</td>
+<td style="text-align:center">20px</td>
+<td style="text-align:center">200px</td>
+<td style="text-align:center">10rem</td>
+<td style="text-align:center">200px</td>
+</tr>
+<tr>
+<td style="text-align:center">480</td>
+<td style="text-align:center">15px</td>
+<td style="text-align:center">150px</td>
+<td style="text-align:center">10rem</td>
+<td style="text-align:center">150px</td>
+</tr>
+<tr>
+<td style="text-align:center">384</td>
+<td style="text-align:center">12px</td>
+<td style="text-align:center">120px</td>
+<td style="text-align:center">10rem</td>
+<td style="text-align:center">120px</td>
+</tr>
+<tr>
+<td style="text-align:center">320</td>
+<td style="text-align:center">10px</td>
+<td style="text-align:center">100px</td>
+<td style="text-align:center">10rem</td>
+<td style="text-align:center">100px</td>
+</tr>
+</tbody>
+</table>
+<p>这个表格的表现出来的数字其实就已经很明显了。</p>
+<p>比如：<br>因为设计稿是640的，那么上面宽度为200px的元素，其页面显示的大小应该也是200px；<br>那么在384的页面中，页面显示相同的元素，其宽度应该变成 200*(384/640) px；</p>
+<p>384/640 = 0.6，384是640的0.6倍，<br>所以384页面宽度下的font-size也等于640页面宽度下的0.6倍，<br>这时384的font-size就等于12px。在不同设备的宽度计算方式以此类推。</p>
+<h2 id="总结一下"><a href="#总结一下" class="headerlink" title="总结一下"></a>总结一下</h2><p>其实 rem 这个东西对于移动端开发来说简直就是一个福音，因为在传统的移动端开发来说的话，各种方式都会有一定的弊端</p>
+<ul>
+<li><p>流式布局的话通过百分比来定义宽度，但是高度的话往往是用px来定住，这个时候在大屏幕的手机下显示效果会变成有些页面元素宽度被拉的很长，但是高度还是和原来一样，十分不协调</p>
+</li>
+<li><p>固定页面宽度的做法，虽然一定程度上解决了上面高度定死，宽度拉长的问题，但是在大屏幕的手机下，两边都是留白，不美观，并且在大屏幕下页面会特别小，</p>
+</li>
+<li><p>响应式的做法只能是针对小型的门户或者博客类网站会用，因为大网站用响应式的话工作量会特别大，并且难以维护。</p>
+</li>
+<li><p>设置viewport进行缩放的话，简单，粗暴，高效，以一个较小的屏幕为基准，缩放到一定程度。基本上可以满足适配的问题。</p>
+</li>
+</ul>
+<p>rem则是可以做到全设备，全尺寸的等比例适配。</p>
+<p><strong>根据屏幕宽度的不同，用js判断或者使用css3中的媒体查询设定不同屏幕宽度下根元素的字体大小。做到全设备的自适应。</strong></p>
+
+          
         
       
     </div>
